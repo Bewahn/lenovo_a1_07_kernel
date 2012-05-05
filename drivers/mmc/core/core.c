@@ -1483,24 +1483,19 @@ int mmc_suspend_host(struct mmc_host *host)
 	if (host->bus_ops && !host->bus_dead) {
 		if (host->bus_ops->suspend)
 			err = host->bus_ops->suspend(host);
-				//&*&*&*JohWan1 BCM4329 wifi module
-				#ifdef CONFIG_LENOVO_BCM4329
-			 	if (host->index == 2)	
-			 	{	 
-					/*
-					 * We simply "remove" the card in this case.
-					 * It will be redetected on resume.
-					 */
-			 		printk("Simply remove the card in suspend\n");
-					if (host->bus_ops->remove)
-						host->bus_ops->remove(host);
-					mmc_claim_host(host);
-					mmc_detach_bus(host);
-					mmc_release_host(host);
-					err = 0;
-			 	}	
-				#endif
-				//&*&*&*JohWan2 BCM4329 wifi module
+		if (err == -ENOSYS || !host->bus_ops->resume) {
+			/*
+			 * We simply "remove" the card in this case.
+			 * It will be redetected on resume.
+			 */
+			if (host->bus_ops->remove)
+				host->bus_ops->remove(host);
+			mmc_claim_host(host);
+			mmc_detach_bus(host);
+			mmc_release_host(host);
+			host->pm_flags = 0;
+			err = 0;
+		}
 	}
 	mmc_bus_put(host);
 
