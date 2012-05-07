@@ -545,6 +545,8 @@ int musb_platform_exit(struct musb *musb)
 	struct device *dev = musb->controller;
 	struct musb_hdrc_platform_data *plat = dev->platform_data;
 
+	del_timer_sync(&musb_idle_timer);
+
 	/* unregister for transciever notification*/
 	otg_unregister_notifier(musb->xceiv, &musb->nb);
 	wake_lock_destroy(&plat->musb_lock);
