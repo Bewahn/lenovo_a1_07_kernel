@@ -49,11 +49,6 @@ config RFKILL_LEDS
 	depends on RFKILL && LEDS_TRIGGERS
 	default y
 
-config LENOVO_BCM4329
-	bool "Enable Lenovo-specific Broadcom 4329 3in1 chip settings"
-	depends on RFKILL
-	default y
-	
 config RFKILL_WIFI_BT_DEFAULT_ON
 	bool "Set WIFI BT module default power on"
 	depends on RFKILL && (RFKILL_WIFI || RFKILL_BT)
