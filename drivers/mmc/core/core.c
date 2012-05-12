@@ -1483,7 +1483,7 @@ int mmc_suspend_host(struct mmc_host *host)
 	if (host->bus_ops && !host->bus_dead) {
 		if (host->bus_ops->suspend)
 			err = host->bus_ops->suspend(host);
-		if (err == -ENOSYS || !host->bus_ops->resume) {
+		if (host->index != 2 && (err == -ENOSYS || !host->bus_ops->resume)) {
 			/*
 			 * We simply "remove" the card in this case.
 			 * It will be redetected on resume.
