@@ -1548,19 +1548,6 @@ int mmc_resume_host(struct mmc_host *host)
 			printk(KERN_WARNING "%s: error %d during resume "
 					    "(card was removed?)\n",
 					    mmc_hostname(host), err);
-			//&*&*&*JohWan1 BCM4329 wifi module
-			#ifdef CONFIG_LENOVO_BCM4329
-			if (host->index == 2)	
-			{	
-				printk("Simply remove the card if resume error\n");
-				if (host->bus_ops->remove)
-			  	host->bus_ops->remove(host);
-				mmc_claim_host(host);
-				mmc_detach_bus(host);
-				mmc_release_host(host);
-			}	
-			#endif
-			//&*&*&*JohWan2 BCM4329 wifi module
 			err = 0;
 		}
 	}
